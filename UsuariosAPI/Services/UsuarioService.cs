@@ -19,13 +19,16 @@ namespace UsuariosAPI.Services
         private TokenService _tokenService;
         private EmailService _emailService;
 
-        public UsuarioService(IMapper mapper, UserManager<CustomIdentityUser> userManager, SignInManager<CustomIdentityUser> signInManager, TokenService tokenService, EmailService emailService)
+        private FinansDBContext _finansDBContext;
+
+        public UsuarioService(IMapper mapper, UserManager<CustomIdentityUser> userManager, SignInManager<CustomIdentityUser> signInManager, TokenService tokenService, EmailService emailService, FinansDBContext finansDBContext)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _emailService = emailService;
+            _finansDBContext = finansDBContext;
         }
 
         public Result cadastrarUsuario(CreateUsuarioDto usuarioDto)
@@ -103,6 +106,15 @@ namespace UsuariosAPI.Services
 
             if (identityResult.Succeeded)
             {
+                //salva usuario no outro banco
+                UsuarioFinans usuario = new UsuarioFinans
+                {
+                    Id = userIdentity.Id,
+                    Nome = userIdentity.UserName,
+                };
+                _finansDBContext.Usuarios.Add(usuario);
+                _finansDBContext.SaveChanges();
+
                 return Result.Ok();
             }
 

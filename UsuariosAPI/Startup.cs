@@ -43,6 +43,7 @@ namespace UsuariosAPI
             });
 
             services.AddDbContext<UserDbContext>(opt => opt.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("UsuarioConexao"))); //configurar o sql  server
+            services.AddDbContext<FinansDBContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("FinansConexao"))); //outro banco
 
             //configurar o identity
             services.AddIdentity<CustomIdentityUser, IdentityRole<int>>(
