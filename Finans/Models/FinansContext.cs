@@ -24,13 +24,14 @@ namespace Finans.Models
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Veiculo> Veiculos { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer("Server=localhost;Database=Finans;Trusted_Connection=True;");
-        //    }
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=localhost;Database=Finans;Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,11 +48,6 @@ namespace Finans.Models
                 entity.Property(e => e.Valor).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.Vencimento).HasColumnType("date");
-
-                entity.HasOne(d => d.Usuario)
-                    .WithMany(p => p.ContasPagars)
-                    .HasForeignKey(d => d.UsuarioId)
-                    .HasConstraintName("FK_ContasPagar_Usuario");
             });
 
             modelBuilder.Entity<ContasReceber>(entity =>
@@ -69,6 +65,7 @@ namespace Finans.Models
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.ContasRecebers)
                     .HasForeignKey(d => d.UsuarioId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ContasReceber_Usuario");
             });
 
@@ -122,6 +119,7 @@ namespace Finans.Models
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.Imoveis)
                     .HasForeignKey(d => d.UsuarioId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Imoveis_Usuario");
             });
 
@@ -129,9 +127,7 @@ namespace Finans.Models
             {
                 entity.ToTable("Usuario");
 
-                entity.Property(e => e.UsuarioId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("UsuarioID");
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Nome)
                     .IsRequired()
@@ -148,9 +144,7 @@ namespace Finans.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Placa)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.Placa).HasMaxLength(50);
 
                 entity.Property(e => e.Renavam).HasMaxLength(50);
 
@@ -159,6 +153,7 @@ namespace Finans.Models
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.Veiculos)
                     .HasForeignKey(d => d.UsuarioId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Veiculos_Usuario");
             });
 

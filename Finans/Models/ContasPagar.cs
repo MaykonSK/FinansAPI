@@ -11,9 +11,7 @@ namespace Finans.Models
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
         public DateTime Vencimento { get; set; }
-        public int Tipo { get; set; }
-        public int? UsuarioId { get; set; }
-
-        public virtual Usuario Usuario { get; set; }
+        public bool Recorrente { get; set; }
+        public int UsuarioId { get; set; }
     }
 }

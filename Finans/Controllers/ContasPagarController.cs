@@ -35,7 +35,7 @@ namespace Finans.Controllers
             return BadRequest(resultado.ToString());
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeletarConta(int id)
         {
             Result resultado = _service.deletarConta(id);

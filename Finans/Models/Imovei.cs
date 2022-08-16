@@ -8,7 +8,7 @@ namespace Finans.Models
     public partial class Imovei
     {
         public int Id { get; set; }
-        public int? UsuarioId { get; set; }
+        public int UsuarioId { get; set; }
         public string Descricao { get; set; }
         public int EnderecoId { get; set; }
         public string CodigoIptu { get; set; }

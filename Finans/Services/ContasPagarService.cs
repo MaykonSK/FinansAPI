@@ -66,13 +66,18 @@ namespace Finans.Services
         public Result deletarConta(int id)
         {
             ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
-
-            var resultado = _context.ContasPagars.Remove(conta).ToResult();
-
-            if (resultado.IsSuccess)
+            
+            if (conta != null)
             {
-                return Result.Ok();
+                _context.ContasPagars.Remove(conta).ToResult();
+                var resultado = _context.SaveChanges().ToResult();
+
+                if (resultado.IsSuccess)
+                {
+                    return Result.Ok();
+                }
             }
+            
             return Result.Fail("Falha ao deletar conta");
         }
     }
