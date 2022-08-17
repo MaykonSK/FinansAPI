@@ -1,5 +1,6 @@
 using Finans.Models;
 using Finans.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,9 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Finans
@@ -42,6 +45,27 @@ namespace Finans
 
             services.AddDbContext<FinansContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ConexaoDB")));
 
+            //configurar a autorização no projeto
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+            .AddJwtBearer(token =>
+            {
+                token.RequireHttpsMetadata = false;
+                token.SaveToken = true;
+                token.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fa8c367f1b4aee1d6feaca1018ea4dc79876febbfde37eeeda2789a7bd256370")),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<ContasPagarService>();
@@ -61,6 +85,9 @@ namespace Finans
             app.UseRouting();
 
             app.UseCors(_policyName);
+
+            //ativar a autenticação
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

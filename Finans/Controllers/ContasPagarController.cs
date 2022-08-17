@@ -1,6 +1,7 @@
 ﻿using Finans.Models;
 using Finans.Services;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,12 +19,14 @@ namespace Finans.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult RecuperarContas()
         {
             return Ok(_service.recuperarContas());
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult CadastrarConta(ContasPagar contapagar)
         {
             Result resultado = _service.cadastrarConta(contapagar);
@@ -36,6 +39,7 @@ namespace Finans.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult DeletarConta(int id)
         {
             Result resultado = _service.deletarConta(id);
