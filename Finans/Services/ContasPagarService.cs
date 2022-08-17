@@ -45,9 +45,11 @@ namespace Finans.Services
             }
         }
 
-        public IEnumerable<ContasPagar> recuperarContas()
+        public IEnumerable<ContasPagar> recuperarContas(int userId)
         {
-            return _context.ContasPagars.ToList();
+            IEnumerable<ContasPagar> lista = _context.ContasPagars.Where(x => x.UsuarioId == userId);
+            return lista;
+
         }
 
         public bool atualizarConta(int id, ContasPagarDto contaspagarDto)

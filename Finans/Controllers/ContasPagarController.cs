@@ -18,16 +18,16 @@ namespace Finans.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult RecuperarContas()
+        public IActionResult RecuperarContas([FromRoute] int userId)
         {
-            return Ok(_service.recuperarContas());
+            return Ok(_service.recuperarContas(userId));
         }
 
         [HttpPost]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult CadastrarConta(ContasPagar contapagar)
+        public IActionResult CadastrarConta([FromBody] ContasPagar contapagar)
         {
             Result resultado = _service.cadastrarConta(contapagar);
 
@@ -40,7 +40,7 @@ namespace Finans.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult DeletarConta(int id)
+        public IActionResult DeletarConta([FromRoute] int id)
         {
             Result resultado = _service.deletarConta(id);
 

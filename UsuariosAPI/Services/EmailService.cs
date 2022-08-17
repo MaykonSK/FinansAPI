@@ -23,6 +23,13 @@ namespace UsuariosAPI.Services
             Enviar(mensagemEmail);
         }
 
+        public void EnviarEmailSenha(string[] destinatario, string assunto, string codigoRecuperacao)
+        {
+            MensagemRedefinirSenha mensagem = new MensagemRedefinirSenha(destinatario, assunto, codigoRecuperacao);
+            var mensagemEmail = CriaCorpoEmailSenha(mensagem);
+            Enviar(mensagemEmail);
+        }
+
         private void Enviar(MimeMessage mensagemEmail)
         {
             using (var client = new SmtpClient())
@@ -53,6 +60,20 @@ namespace UsuariosAPI.Services
         {
             var mensagemEmail = new MimeMessage();
             mensagemEmail.From.Add(new MailboxAddress("teste",_configuration.GetValue<string>("EmailSettings:From")));
+            mensagemEmail.To.AddRange(mensagem.Destinatario);
+            mensagemEmail.Subject = mensagem.Assunto;
+            mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Text)
+            {
+                Text = mensagem.Conteudo
+            };
+
+            return mensagemEmail;
+        }
+
+        private MimeMessage CriaCorpoEmailSenha(MensagemRedefinirSenha mensagem)
+        {
+            var mensagemEmail = new MimeMessage();
+            mensagemEmail.From.Add(new MailboxAddress("teste", _configuration.GetValue<string>("EmailSettings:From")));
             mensagemEmail.To.AddRange(mensagem.Destinatario);
             mensagemEmail.Subject = mensagem.Assunto;
             mensagemEmail.Body = new TextPart(MimeKit.Text.TextFormat.Text)

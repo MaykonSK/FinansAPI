@@ -5830,19 +5830,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mayco\\.nuget\\packages\\": {}
+    "C:\\Users\\Maycon.Oliveira\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\Finans\\FinansAPI\\Finans\\Finans\\Finans.csproj",
+      "projectUniqueName": "C:\\Users\\Maycon.Oliveira\\source\\repos\\FinansAPI\\Finans\\Finans.csproj",
       "projectName": "Finans",
-      "projectPath": "C:\\Projects\\Finans\\FinansAPI\\Finans\\Finans\\Finans.csproj",
-      "packagesPath": "C:\\Users\\mayco\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\Finans\\FinansAPI\\Finans\\Finans\\obj\\",
+      "projectPath": "C:\\Users\\Maycon.Oliveira\\source\\repos\\FinansAPI\\Finans\\Finans.csproj",
+      "packagesPath": "C:\\Users\\Maycon.Oliveira\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Maycon.Oliveira\\source\\repos\\FinansAPI\\Finans\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\mayco\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Maycon.Oliveira\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5927,7 +5927,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.410\\RuntimeIdentifierGraph.json"
       }
     }
   }

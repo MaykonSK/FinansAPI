@@ -27,7 +27,7 @@ namespace UsuariosAPI.Controllers
             Result resultado = _service.cadastrarUsuario(createDto);
             if (resultado.IsFailed)
             {
-                return StatusCode(500);
+                return StatusCode(500, resultado.Errors.FirstOrDefault());
             }
             return Ok(resultado.Successes.FirstOrDefault());
         }

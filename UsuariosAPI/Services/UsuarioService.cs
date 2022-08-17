@@ -39,28 +39,39 @@ namespace UsuariosAPI.Services
             //passando os dados do usuario para o identity
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
 
-            //obtem o resultado da criação    //criando o usuario no identity
-            Task<IdentityResult> resultado = _userManager.CreateAsync(usuarioIdentity, usuarioDto.Password);
+            //pesquisa o usuario pelo email
+            var userEmail = _signInManager.UserManager.FindByEmailAsync(usuarioIdentity.Email).Result;
+            var userName = _userManager.Users.FirstOrDefault(user => user.UserName == usuarioIdentity.UserName);
 
-            
 
-            if (resultado.Result.Succeeded)
+
+            if (userEmail == null && userName == null)
             {
-                //cria role
-                //var createRoleResult = _roleManager.CreateAsync(new IdentityRole<int>("admin")).Result;
+                //obtem o resultado da criação    //criando o usuario no identity
+                Task<IdentityResult> resultado = _userManager.CreateAsync(usuarioIdentity, usuarioDto.Password);
 
-                //adiciona uma role admin para o usuario
-                //var usuarioRoleResult = _userManager.AddToRoleAsync(usuarioIdentity, "admin").Result;
+                if (resultado.Result.Succeeded)
+                {
+                    //cria role
+                    //var createRoleResult = _roleManager.CreateAsync(new IdentityRole<int>("admin")).Result;
 
-                _userManager.AddToRoleAsync(usuarioIdentity, "regular");
+                    //adiciona uma role admin para o usuario
+                    //var usuarioRoleResult = _userManager.AddToRoleAsync(usuarioIdentity, "admin").Result;
 
-                var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result; //recuperar codigo de autenticação de e-mail
-                var encodeCode = HttpUtility.UrlEncode(code);
+                    _userManager.AddToRoleAsync(usuarioIdentity, "regular");
 
-                _emailService.EnviarEmail(new[] { usuarioIdentity.Email }, "Ativação de Conta", usuarioIdentity.Id, encodeCode);
-                return Result.Ok().WithSuccess(code);
+                    var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result; //recuperar codigo de autenticação de e-mail
+                    var encodeCode = HttpUtility.UrlEncode(code);
+
+                    _emailService.EnviarEmail(new[] { usuarioIdentity.Email }, "Ativação de Conta", usuarioIdentity.Id, encodeCode);
+                    return Result.Ok().WithSuccess("Cadastrado efetuado! Código de ativação enviado no e-mail.");
+                }
+                return Result.Fail("Falha ao cadastrar usuário");
             }
-            return Result.Fail("Falha ao cadastrar usuário");
+            return Result.Fail("Nome ou e-mail já existente");
+
+
+
         }
 
         public Result logarUsuario(Login login)
@@ -131,6 +142,11 @@ namespace UsuariosAPI.Services
             {
                 //solicita token para redefinição de senha
                 string codigoDeRecuperacao = _signInManager.UserManager.GeneratePasswordResetTokenAsync(userIdentity).Result;
+
+                var encodeCode = HttpUtility.UrlEncode(codigoDeRecuperacao);
+
+                _emailService.EnviarEmailSenha(new[] { userIdentity.Email }, "Redefinição de senha", encodeCode);
+
                 return Result.Ok().WithSuccess(codigoDeRecuperacao);
             }
 
