@@ -55,33 +55,30 @@ namespace UsuariosAPI.Services
                 w2 = word2.Substring(0, 2);
 
                 Random random = new Random();
+                int numero = random.Next(999, 1999);
 
-                List<int> numero = new List<int>();
-
-                for(int cont = 0; cont < 4; cont++)
-                {
-                    var num = random.Next(0, 99);
-                    numero.Add(num);
-                }
-
-                //var numeroRondomico = numero.fi
+                username = (w2 + w1 + numero).ToUpper();
 
             } else
             {
                 word1 = words[0];
                 w1 = word1.Substring(0, 2);
+
+                Random random = new Random();
+                int numero = random.Next(999, 1999);
+
+                username = (w1 + numero).ToUpper();
             }
 
-            
+            usuario.Username = username;
 
             //passando os dados do usuario para o identity
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
 
             //pesquisa o usuario pelo email
             var userEmail = _signInManager.UserManager.FindByEmailAsync(usuarioIdentity.Email).Result;
-            var userName = _userManager.Users.FirstOrDefault(user => user.UserName == usuarioIdentity.UserName);
 
-            if (userEmail == null && userName == null)
+            if (userEmail == null)
             {
                 //obtem o resultado da criação    //criando o usuario no identity
                 Task<IdentityResult> resultado = _userManager.CreateAsync(usuarioIdentity, usuarioDto.Password);
@@ -90,17 +87,17 @@ namespace UsuariosAPI.Services
                 {
                     _userManager.AddToRoleAsync(usuarioIdentity, "regular");
 
-                    var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result; //recuperar codigo de autenticação de e-mail
+                    //recuperar codigo de autenticação de e-mail
+                    var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
                     var encodeCode = HttpUtility.UrlEncode(code);
 
                     _emailService.EnviarEmailAtivacao(new[] { usuarioIdentity.Email }, "Ativação de Conta", usuarioIdentity.Id, encodeCode);
-                    return Result.Ok().WithSuccess("Cadastrado efetuado! Código de ativação enviado no e-mail.");
+
+                    return Result.Ok().WithSuccess("Cadastrado efetuado! Código de ativação enviado para o e-mail");
                 }
                 return Result.Fail("Falha ao cadastrar usuário");
             }
-            return Result.Fail("Nome ou e-mail já existente");
-
-
+            return Result.Fail("E-mail já cadastrado");
 
         }
 

@@ -18,7 +18,6 @@ namespace UsuariosAPI.Services
                     new Claim("username", usuario.UserName),
                     new Claim("usuario", usuario.Id.ToString()),
                     new Claim(ClaimTypes.Role, role),
-                    //new Claim(ClaimTypes.DateOfBirth, usuario.DataNascimento.ToString())
             };
 
             var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fa8c367f1b4aee1d6feaca1018ea4dc79876febbfde37eeeda2789a7bd256370"));

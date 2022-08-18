@@ -38,7 +38,6 @@ namespace UsuariosAPI.Models
 
             PasswordHasher<CustomIdentityUser> hasher = new PasswordHasher<CustomIdentityUser>();
 
-            //admin.PasswordHash = hasher.HashPassword(admin, "Admin123!");
             //camuflando os dados com secrets
             admin.PasswordHash = hasher.HashPassword(admin, _iconfiguration.GetValue<string>("admininfo:password"));
 
