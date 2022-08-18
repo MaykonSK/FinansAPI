@@ -36,14 +36,50 @@ namespace UsuariosAPI.Services
             //passando os dados do DTO para o usuario
             Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
 
+            string name = usuario.Name.Trim();
+            string[] words = name.Split(' ');
+
+            var word1 = "";
+            var word2 = "";
+            var w1 = "";
+            var w2 = "";
+
+            var username = "";
+
+            if (words.Length > 1)
+            {
+                word1 = words[0];
+                word2 = words[1];
+
+                w1 = word1.Substring(0, 2);
+                w2 = word2.Substring(0, 2);
+
+                Random random = new Random();
+
+                List<int> numero = new List<int>();
+
+                for(int cont = 0; cont < 4; cont++)
+                {
+                    var num = random.Next(0, 99);
+                    numero.Add(num);
+                }
+
+                //var numeroRondomico = numero.fi
+
+            } else
+            {
+                word1 = words[0];
+                w1 = word1.Substring(0, 2);
+            }
+
+            
+
             //passando os dados do usuario para o identity
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
 
             //pesquisa o usuario pelo email
             var userEmail = _signInManager.UserManager.FindByEmailAsync(usuarioIdentity.Email).Result;
             var userName = _userManager.Users.FirstOrDefault(user => user.UserName == usuarioIdentity.UserName);
-
-
 
             if (userEmail == null && userName == null)
             {
@@ -52,12 +88,6 @@ namespace UsuariosAPI.Services
 
                 if (resultado.Result.Succeeded)
                 {
-                    //cria role
-                    //var createRoleResult = _roleManager.CreateAsync(new IdentityRole<int>("admin")).Result;
-
-                    //adiciona uma role admin para o usuario
-                    //var usuarioRoleResult = _userManager.AddToRoleAsync(usuarioIdentity, "admin").Result;
-
                     _userManager.AddToRoleAsync(usuarioIdentity, "regular");
 
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result; //recuperar codigo de autenticação de e-mail

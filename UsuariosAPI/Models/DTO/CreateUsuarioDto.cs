@@ -9,7 +9,7 @@ namespace UsuariosAPI.Models.DTO
     public class CreateUsuarioDto
     {
         [Required]
-        public string Username { get; set; }
+        public string Name { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
