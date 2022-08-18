@@ -63,7 +63,7 @@ namespace UsuariosAPI.Services
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result; //recuperar codigo de autenticação de e-mail
                     var encodeCode = HttpUtility.UrlEncode(code);
 
-                    _emailService.EnviarEmail(new[] { usuarioIdentity.Email }, "Ativação de Conta", usuarioIdentity.Id, encodeCode);
+                    _emailService.EnviarEmailAtivacao(new[] { usuarioIdentity.Email }, "Ativação de Conta", usuarioIdentity.Id, encodeCode);
                     return Result.Ok().WithSuccess("Cadastrado efetuado! Código de ativação enviado no e-mail.");
                 }
                 return Result.Fail("Falha ao cadastrar usuário");
@@ -143,14 +143,15 @@ namespace UsuariosAPI.Services
                 //solicita token para redefinição de senha
                 string codigoDeRecuperacao = _signInManager.UserManager.GeneratePasswordResetTokenAsync(userIdentity).Result;
 
+                //formata o token
                 var encodeCode = HttpUtility.UrlEncode(codigoDeRecuperacao);
 
                 _emailService.EnviarEmailSenha(new[] { userIdentity.Email }, "Redefinição de senha", encodeCode);
 
-                return Result.Ok().WithSuccess(codigoDeRecuperacao);
+                return Result.Ok().WithSuccess("Redefinição de senha enviado para o e-mail");
             }
 
-            return Result.Fail("Falha ao solicitar redefinição");
+            return Result.Fail("E-mail não encontrado");
         }
 
         public Result redefinirSenha(RedefinicaoSenha request)
@@ -158,13 +159,17 @@ namespace UsuariosAPI.Services
             //recupera usuario identity pelo email
             var userIdentity = _userManager.Users.FirstOrDefault(user => user.Email == request.Email);
 
-            IdentityResult resultado = _signInManager.UserManager.ResetPasswordAsync(userIdentity, request.Token, request.Password).Result;
-            if (resultado.Succeeded)
+            if (userIdentity != null)
             {
-                return Result.Ok().WithSuccess("Senha definida com sucesso");
+                IdentityResult resultado = _signInManager.UserManager.ResetPasswordAsync(userIdentity, request.Token, request.Password).Result;
+
+                if (resultado.Succeeded)
+                {
+                    return Result.Ok().WithSuccess("Senha redefinida com sucesso");
+                }
             }
 
-            return Result.Fail("Não foi possivel redefinir a senha");
+            return Result.Fail("E-mail não encontrado");
         }
     }
 }

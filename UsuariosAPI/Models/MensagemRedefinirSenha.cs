@@ -12,13 +12,13 @@ namespace UsuariosAPI.Models
         public string Assunto { get; set; }
         public string Conteudo { get; set; }
 
-        public MensagemRedefinirSenha(IEnumerable<string> destinatario, string assunto, string codigo)
+        public MensagemRedefinirSenha(IEnumerable<string> destinatario, string assunto, string token)
         {
             Destinatario = new List<MailboxAddress>();
             Destinatario.AddRange(destinatario.Select(d => new MailboxAddress("", d)));
             //Destinatario.AddRange((IEnumerable<MailboxAddress>)destinatario);
             Assunto = assunto;
-            Conteudo = $"https://localhost:5001/redefinir-senha?token={codigo}";
+            Conteudo = $"http://localhost:4200/redefinir-senha?token={token}";
         }
     }
 }

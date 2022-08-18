@@ -121,3 +121,4 @@ C:\Users\Maycon.Oliveira\source\repos\FinansAPI\Finans\obj\Debug\net5.0\Finans.d
 C:\Users\Maycon.Oliveira\source\repos\FinansAPI\Finans\obj\Debug\net5.0\ref\Finans.dll
 C:\Users\Maycon.Oliveira\source\repos\FinansAPI\Finans\obj\Debug\net5.0\Finans.pdb
 C:\Users\Maycon.Oliveira\source\repos\FinansAPI\Finans\obj\Debug\net5.0\Finans.genruntimeconfig.cache
+C:\Projects\Finans\FinansAPI\Finans\Finans\bin\Debug\net5.0\Finans.StaticWebAssets.xml

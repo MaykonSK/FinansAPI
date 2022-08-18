@@ -226,3 +226,4 @@ C:\Users\Maycon.Oliveira\source\repos\FinansAPI\UsuariosAPI\obj\Debug\net5.0\Usu
 C:\Users\Maycon.Oliveira\source\repos\FinansAPI\UsuariosAPI\obj\Debug\net5.0\ref\UsuariosAPI.dll
 C:\Users\Maycon.Oliveira\source\repos\FinansAPI\UsuariosAPI\obj\Debug\net5.0\UsuariosAPI.pdb
 C:\Users\Maycon.Oliveira\source\repos\FinansAPI\UsuariosAPI\obj\Debug\net5.0\UsuariosAPI.genruntimeconfig.cache
+C:\Projects\Finans\FinansAPI\Finans\UsuariosAPI\bin\Debug\net5.0\UsuariosAPI.StaticWebAssets.xml

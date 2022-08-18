@@ -16,10 +16,10 @@ namespace UsuariosAPI.Services
             _configuration = configuration;
         }
 
-        public void EnviarEmail(string[] destinatario, string assunto, int usuarioId, string codigoAtivacao)
+        public void EnviarEmailAtivacao(string[] destinatario, string assunto, int usuarioId, string codigoAtivacao)
         {
-            Mensagem mensagem = new Mensagem(destinatario, assunto, usuarioId, codigoAtivacao);
-            var mensagemEmail = CriaCorpoEmail(mensagem);
+            MensagemAtivacao mensagem = new MensagemAtivacao(destinatario, assunto, usuarioId, codigoAtivacao);
+            var mensagemEmail = CriaCorpoEmailAtivacao(mensagem);
             Enviar(mensagemEmail);
         }
 
@@ -56,7 +56,7 @@ namespace UsuariosAPI.Services
             }
         }
 
-        private MimeMessage CriaCorpoEmail(Mensagem mensagem)
+        private MimeMessage CriaCorpoEmailAtivacao(MensagemAtivacao mensagem)
         {
             var mensagemEmail = new MimeMessage();
             mensagemEmail.From.Add(new MailboxAddress("teste",_configuration.GetValue<string>("EmailSettings:From")));
