@@ -106,21 +106,26 @@ namespace UsuariosAPI.Services
             //recupera o UserName pelo email
             var user = _signInManager.UserManager.FindByEmailAsync(login.Email).Result.UserName;
 
-            //efetuar autenticação via username e senha
-            var resultado = _signInManager.PasswordSignInAsync(user, login.Password, false, false);
-            
-            if (resultado.Result.Succeeded)
+            if(user != null)
             {
-                //recuperar identity user
-                var identityUser = _signInManager.UserManager.Users.FirstOrDefault(usuario => usuario.NormalizedUserName == user.ToUpper());
+                //efetuar autenticação via username e senha
+                var resultado = _signInManager.PasswordSignInAsync(user, login.Password, false, false);
 
-                //gerar token e retornar para o osuaurio
-                Token token = _tokenService.CreateToken(identityUser, _signInManager.UserManager.GetRolesAsync(identityUser).Result.FirstOrDefault());
+                if (resultado.Result.Succeeded)
+                {
+                    //recuperar identity user
+                    var identityUser = _signInManager.UserManager.Users.FirstOrDefault(usuario => usuario.NormalizedUserName == user.ToUpper());
 
-                //retorna o token para o controller
-                return Result.Ok().WithSuccess(token.Value);
+                    //gerar token e retornar para o osuaurio
+                    Token token = _tokenService.CreateToken(identityUser, _signInManager.UserManager.GetRolesAsync(identityUser).Result.FirstOrDefault());
+
+                    //retorna o token para o controller
+                    return Result.Ok().WithSuccess(token.Value);
+                }
+                return Result.Fail("E-mail ou senha incorreto");
             }
-            return Result.Fail("Login falhou");
+            return Result.Fail("Conta não encontrada");
+
         }
 
         public Result deslogarUsuario()
@@ -139,8 +144,12 @@ namespace UsuariosAPI.Services
             //recupera usuario identity
             var userIdentity = _userManager.Users.FirstOrDefault(user => user.Id == request.UsuarioId);
 
+            //formata o token
+            var encodeCode = HttpUtility.UrlEncode(request.CodigoAtivacao);
+            
+
             //confirmar o e-mail
-            var identityResult = _userManager.ConfirmEmailAsync(userIdentity, request.CodigoAtivacao).Result;
+            var identityResult = _userManager.ConfirmEmailAsync(userIdentity, encodeCode).Result;
 
             if (identityResult.Succeeded)
             {
