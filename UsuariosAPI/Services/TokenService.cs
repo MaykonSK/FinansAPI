@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,8 +14,10 @@ namespace UsuariosAPI.Services
         {
             Claim[] direitosUsuario = new Claim[]
             {
-                    new Claim("username", usuario.UserName),
-                    new Claim("usuario", usuario.Id.ToString()),
+                    //Tipos de dados retornado no Token JWT
+                    new Claim("Name", usuario.Name),
+                    new Claim("UserName", usuario.UserName),
+                    new Claim("Id", usuario.Id.ToString()),
                     new Claim(ClaimTypes.Role, role),
             };
 

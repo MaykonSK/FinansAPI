@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
@@ -9,10 +8,12 @@ namespace UsuariosAPI.Services
 {
     public class EmailService
     {
+        //configura o secrets
         private IConfiguration _configuration;
 
         public EmailService(IConfiguration configuration)
         {
+            //chama o secrets no construtor
             _configuration = configuration;
         }
 

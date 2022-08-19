@@ -158,17 +158,17 @@ namespace UsuariosAPI.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "efed742d-8aab-4d01-a595-3dc9645d31f0", "admin", "ADMIN" });
+                values: new object[] { 1, "d784dd72-bbed-4688-859e-de23a9fc6ac1", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "67c7818b-afcb-4272-9fc7-860a3e223b84", "regular", "REGULAR" });
+                values: new object[] { 2, "660889b1-1e80-440b-a381-2c2325588505", "regular", "REGULAR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "8e720d62-a616-4fd1-b7b4-8bd1089adf9a", "admin@admin.com", true, false, null, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAEAACcQAAAAECs+AdiUiL0h9UNmTCW5aw+uGARPSjBLYJdsO23L0LIs2Ir25c6Kw+dJFGfOlhoQGQ==", null, false, "fecc82d7-0374-4a8c-adb2-2cecf92d186b", false, "admin" });
+                values: new object[] { 1, 0, "ab1dc3cb-5b91-457e-a850-238da6115e49", "admin@admin.com", true, false, null, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAEAACcQAAAAENnKULagdgQMOJpfK/qjOGJS8msVJqUiJAJsddmk+fL2LyscAYzq3F/X1K2b/7Cv5w==", null, false, "5bb31873-b72d-4528-bc20-58db62657f7c", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

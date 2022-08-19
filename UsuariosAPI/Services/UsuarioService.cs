@@ -2,7 +2,6 @@
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -36,6 +35,7 @@ namespace UsuariosAPI.Services
             //passando os dados do DTO para o usuario
             Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
 
+            #region Cria UserName automatico
             string name = usuario.Name.Trim();
             string[] words = name.Split(' ');
 
@@ -72,6 +72,9 @@ namespace UsuariosAPI.Services
 
             usuario.Username = username;
 
+            #endregion
+
+            #region Cadastra usuário
             //passando os dados do usuario para o identity
             CustomIdentityUser usuarioIdentity = _mapper.Map<CustomIdentityUser>(usuario);
 
@@ -89,24 +92,27 @@ namespace UsuariosAPI.Services
 
                     //recuperar codigo de autenticação de e-mail
                     var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
-                    var encodeCode = HttpUtility.UrlEncode(code);
 
+                    #region Envia e-mail
+                    var encodeCode = HttpUtility.UrlEncode(code);
                     _emailService.EnviarEmailAtivacao(new[] { usuarioIdentity.Email }, "Ativação de Conta", usuarioIdentity.Id, encodeCode);
+                    #endregion
 
                     return Result.Ok().WithSuccess("Cadastrado efetuado! Código de ativação enviado para o e-mail");
                 }
                 return Result.Fail("Falha ao cadastrar usuário");
             }
             return Result.Fail("E-mail já cadastrado");
-
+            #endregion
         }
 
         public Result logarUsuario(Login login)
         {
+            #region login
             //recupera o UserName pelo email
             var user = _signInManager.UserManager.FindByEmailAsync(login.Email).Result.UserName;
 
-            if(user != null)
+            if (user != null)
             {
                 //efetuar autenticação via username e senha
                 var resultado = _signInManager.PasswordSignInAsync(user, login.Password, false, false);
@@ -125,11 +131,12 @@ namespace UsuariosAPI.Services
                 return Result.Fail("E-mail ou senha incorreto");
             }
             return Result.Fail("Conta não encontrada");
-
+            #endregion
         }
 
         public Result deslogarUsuario()
         {
+            #region Logout
             var resultado = _signInManager.SignOutAsync();
             if (resultado.IsCompletedSuccessfully)
             {
@@ -137,22 +144,21 @@ namespace UsuariosAPI.Services
             }
 
             return Result.Fail("Logout falhou");
+            #endregion
         }
 
         public Result ativaContaUsuario(AtivaConta request)
         {
+            #region Ativação de conta
             //recupera usuario identity
             var userIdentity = _userManager.Users.FirstOrDefault(user => user.Id == request.UsuarioId);
 
-            //formata o token
-            var encodeCode = HttpUtility.UrlEncode(request.CodigoAtivacao);
-            
-
             //confirmar o e-mail
-            var identityResult = _userManager.ConfirmEmailAsync(userIdentity, encodeCode).Result;
+            var identityResult = _userManager.ConfirmEmailAsync(userIdentity, request.CodigoAtivacao).Result;
 
             if (identityResult.Succeeded)
             {
+                #region Salva ID e e-mail do usuário no banco Finans
                 //salva usuario no outro banco
                 UsuarioFinans usuario = new UsuarioFinans
                 {
@@ -163,14 +169,16 @@ namespace UsuariosAPI.Services
                 _finansDBContext.SaveChanges();
 
                 return Result.Ok();
+                #endregion
             }
 
             return Result.Fail("Falha ao ativar conta de usuário");
-            
+            #endregion
         }
 
         public Result solicitaResetSenha(SolicitaResetSenha request)
         {
+            #region Solicita nova senha
             //recupera usuario identity pelo email
             var userIdentity = _userManager.Users.FirstOrDefault(user => user.Email == request.Email);
 
@@ -179,19 +187,22 @@ namespace UsuariosAPI.Services
                 //solicita token para redefinição de senha
                 string codigoDeRecuperacao = _signInManager.UserManager.GeneratePasswordResetTokenAsync(userIdentity).Result;
 
+                #region Envia e-mail
                 //formata o token
                 var encodeCode = HttpUtility.UrlEncode(codigoDeRecuperacao);
-
                 _emailService.EnviarEmailSenha(new[] { userIdentity.Email }, "Redefinição de senha", encodeCode);
+                #endregion
 
                 return Result.Ok().WithSuccess("Redefinição de senha enviado para o e-mail");
             }
 
             return Result.Fail("E-mail não encontrado");
+            #endregion
         }
 
         public Result redefinirSenha(RedefinicaoSenha request)
         {
+            #region Redefine a senha
             //recupera usuario identity pelo email
             var userIdentity = _userManager.Users.FirstOrDefault(user => user.Email == request.Email);
 
@@ -206,6 +217,7 @@ namespace UsuariosAPI.Services
             }
 
             return Result.Fail("E-mail não encontrado");
+            #endregion
         }
     }
 }

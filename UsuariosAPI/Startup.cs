@@ -1,19 +1,11 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UsuariosAPI.Models;
 using UsuariosAPI.Services;
 
@@ -63,7 +55,7 @@ namespace UsuariosAPI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //utilizar o auto mapper
             services.AddTransient<UsuarioService>(); //ativa a classe como service
             services.AddTransient<TokenService>(); //ativa a classe como service
-            services.AddTransient<EmailService>();
+            services.AddTransient<EmailService>(); //ativa a classe como service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,8 +65,6 @@ namespace UsuariosAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            
 
             app.UseHttpsRedirection();
 
