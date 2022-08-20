@@ -18,7 +18,7 @@ namespace Finans.Controllers
             _service = service;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{userId}")]
         [Authorize(Roles = "admin, regular")]
         public IActionResult RecuperarContas([FromRoute] int userId)
         {

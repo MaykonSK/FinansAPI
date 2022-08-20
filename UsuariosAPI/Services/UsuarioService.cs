@@ -168,7 +168,7 @@ namespace UsuariosAPI.Services
                 _finansDBContext.Usuarios.Add(usuario);
                 _finansDBContext.SaveChanges();
 
-                return Result.Ok();
+                return Result.Ok().WithSuccess("Conta ativada com sucesso");
                 #endregion
             }
 
