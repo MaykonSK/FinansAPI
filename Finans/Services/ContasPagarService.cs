@@ -49,7 +49,6 @@ namespace Finans.Services
         {
             IEnumerable<ContasPagar> lista = _context.ContasPagars.Where(x => x.UsuarioId == userId);
             return lista;
-
         }
 
         public bool atualizarConta(int id, ContasPagarDto contaspagarDto)

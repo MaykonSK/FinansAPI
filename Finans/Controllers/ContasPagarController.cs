@@ -51,5 +51,12 @@ namespace Finans.Controllers
 
             return NotFound(resultado.ToString());
         }
+
+        [HttpPut]
+        [Authorize(Roles = "admin, regular")]
+        public IActionResult atualizarConta()
+        {
+
+        }
     }
 }
