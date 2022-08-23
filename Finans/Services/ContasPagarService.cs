@@ -51,17 +51,18 @@ namespace Finans.Services
             return lista;
         }
 
-        public bool atualizarConta(int id, ContasPagarDto contaspagarDto)
+        public Result atualizarConta(int id, ContasPagarDto contaspagarDto)
         {
             ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
 
             if (conta != null)
             {
                 _mapper.Map(contaspagarDto, conta);
+                _context.ContasPagars.Update(conta);
                 _context.SaveChanges();
-                return true;
+                return Result.Ok();
             }
-            return false;
+            return Result.Fail("Conta não encontrada");
         }
 
         public Result deletarConta(int id)

@@ -7,7 +7,6 @@ namespace Finans.Profiles
     {
         public ContasPagar()
         {
-            CreateMap<ContasPagar, ContasPagarDto>();
             CreateMap<ContasPagarDto, ContasPagar>();
         }
     }

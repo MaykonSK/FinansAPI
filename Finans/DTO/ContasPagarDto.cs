@@ -7,6 +7,6 @@ namespace Finans.DTO
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
         public DateTime Vencimento { get; set; }
-        public int Tipo { get; set; }
+        public bool Recorrente { get; set; }
     }
 }

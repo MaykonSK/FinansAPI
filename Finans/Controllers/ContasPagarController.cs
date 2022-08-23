@@ -1,4 +1,5 @@
-﻿using Finans.Models;
+﻿using Finans.DTO;
+using Finans.Models;
 using Finans.Services;
 using FluentResults;
 using Microsoft.AspNetCore.Authorization;
@@ -52,11 +53,18 @@ namespace Finans.Controllers
             return NotFound(resultado.ToString());
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult atualizarConta()
+        public IActionResult atualizarConta(int id, ContasPagarDto contapagar)
         {
+            Result resultado = _service.atualizarConta(id, contapagar);
 
+            if (resultado.IsSuccess)
+            {
+                return Ok(resultado.Successes);
+            }
+
+            return NotFound(resultado.Errors);
         }
     }
 }
