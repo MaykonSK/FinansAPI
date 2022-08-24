@@ -11,7 +11,7 @@ namespace Finans.Services
     public class ContasPagarService
     {
         private FinansContext _context;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public ContasPagarService(FinansContext context, IMapper mapper)
         {
@@ -30,7 +30,7 @@ namespace Finans.Services
 
                     if (resultado.IsSuccess)
                     {
-                        return Result.Ok();
+                        return Result.Ok().WithSuccess("Conta cadastrada");
                     }
 
                     return Result.Fail("Erro ao salvar conta");
@@ -60,7 +60,7 @@ namespace Finans.Services
                 _mapper.Map(contaspagarDto, conta);
                 _context.ContasPagars.Update(conta);
                 _context.SaveChanges();
-                return Result.Ok();
+                return Result.Ok().WithSuccess("Conta atualizada");
             }
             return Result.Fail("Conta não encontrada");
         }
@@ -76,7 +76,7 @@ namespace Finans.Services
 
                 if (resultado.IsSuccess)
                 {
-                    return Result.Ok();
+                    return Result.Ok().WithSuccess("Conta excluida");
                 }
             }
             

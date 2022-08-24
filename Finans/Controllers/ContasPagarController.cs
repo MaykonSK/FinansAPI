@@ -5,6 +5,7 @@ using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Finans.Controllers
 {
@@ -34,9 +35,9 @@ namespace Finans.Controllers
 
             if (resultado.IsSuccess)
             {
-                return Ok();
+                return Ok(resultado.Successes.FirstOrDefault());
             }
-            return BadRequest(resultado.ToString());
+            return BadRequest(resultado.IsFailed);
         }
 
         [HttpDelete("{id}")]
@@ -47,10 +48,10 @@ namespace Finans.Controllers
 
             if (resultado.IsSuccess)
             {
-                return Ok();
+                return Ok(resultado.Successes.FirstOrDefault());
             }
 
-            return NotFound(resultado.ToString());
+            return NotFound(resultado.IsFailed);
         }
 
         [HttpPut("{id}")]
@@ -61,10 +62,10 @@ namespace Finans.Controllers
 
             if (resultado.IsSuccess)
             {
-                return Ok(resultado.Successes);
+                return Ok(resultado.Successes.FirstOrDefault());
             }
 
-            return NotFound(resultado.Errors);
+            return NotFound(resultado.IsFailed);
         }
     }
 }

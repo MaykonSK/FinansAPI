@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Finans.DTO;
+using Finans.Models;
 
 namespace Finans.Profiles
 {
-    public class ContasPagar : Profile
+    public class ContasPagarProfile : Profile
     {
-        public ContasPagar()
+        public ContasPagarProfile()
         {
             CreateMap<ContasPagarDto, ContasPagar>();
         }
