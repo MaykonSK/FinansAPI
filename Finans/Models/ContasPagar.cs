@@ -13,5 +13,6 @@ namespace Finans.Models
         public DateTime Vencimento { get; set; }
         public bool Recorrente { get; set; }
         public int UsuarioId { get; set; }
+        public bool? Paga { get; set; }
     }
 }

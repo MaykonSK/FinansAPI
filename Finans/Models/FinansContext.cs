@@ -28,8 +28,7 @@ namespace Finans.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=Finans;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Name=ConexaoDB");
             }
         }
 
@@ -53,6 +52,8 @@ namespace Finans.Models
             modelBuilder.Entity<ContasReceber>(entity =>
             {
                 entity.ToTable("ContasReceber");
+
+                entity.HasIndex(e => e.UsuarioId, "IX_ContasReceber_UsuarioID");
 
                 entity.Property(e => e.Descricao).HasMaxLength(50);
 
@@ -96,6 +97,10 @@ namespace Finans.Models
 
             modelBuilder.Entity<Imovei>(entity =>
             {
+                entity.HasIndex(e => e.EnderecoId, "IX_Imoveis_EnderecoID");
+
+                entity.HasIndex(e => e.UsuarioId, "IX_Imoveis_UsuarioID");
+
                 entity.Property(e => e.CodigoIptu)
                     .HasMaxLength(50)
                     .HasColumnName("CodigoIPTU");
@@ -136,6 +141,8 @@ namespace Finans.Models
 
             modelBuilder.Entity<Veiculo>(entity =>
             {
+                entity.HasIndex(e => e.UsuarioId, "IX_Veiculos_UsuarioID");
+
                 entity.Property(e => e.Marca)
                     .IsRequired()
                     .HasMaxLength(50);

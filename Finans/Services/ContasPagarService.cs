@@ -47,40 +47,96 @@ namespace Finans.Services
 
         public IEnumerable<ContasPagar> recuperarContas(int userId)
         {
-            IEnumerable<ContasPagar> lista = _context.ContasPagars.Where(x => x.UsuarioId == userId);
+            IEnumerable<ContasPagar> lista = _context.ContasPagars.Where(x => x.UsuarioId == userId).OrderBy(y => y.Vencimento);
             return lista;
+        }
+
+        public double totalContas(int userId)
+        {
+            double total = 0;
+
+            IEnumerable<ContasPagar> lista = _context.ContasPagars.Where(x => x.UsuarioId == userId).OrderBy(y => y.Vencimento);
+
+            total = (double)lista.Sum(x => x.Valor);
+
+            return total;
         }
 
         public Result atualizarConta(int id, ContasPagarDto contaspagarDto)
         {
-            ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
-
-            if (conta != null)
+            try
             {
-                _mapper.Map(contaspagarDto, conta);
-                _context.ContasPagars.Update(conta);
-                _context.SaveChanges();
-                return Result.Ok().WithSuccess("Conta atualizada");
+                ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
+
+                if (conta != null)
+                {
+                    _mapper.Map(contaspagarDto, conta);
+                    _context.ContasPagars.Update(conta);
+                    _context.SaveChanges();
+                    return Result.Ok().WithSuccess("Conta atualizada");
+                }
+                return Result.Fail("Conta não encontrada");
             }
-            return Result.Fail("Conta não encontrada");
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+            
         }
 
         public Result deletarConta(int id)
         {
-            ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
-            
-            if (conta != null)
+            try
             {
-                _context.ContasPagars.Remove(conta).ToResult();
-                var resultado = _context.SaveChanges().ToResult();
+                ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
 
-                if (resultado.IsSuccess)
+                if (conta != null)
                 {
-                    return Result.Ok().WithSuccess("Conta excluida");
+                    _context.ContasPagars.Remove(conta).ToResult();
+                    var resultado = _context.SaveChanges().ToResult();
+
+                    if (resultado.IsSuccess)
+                    {
+                        return Result.Ok().WithSuccess("Conta excluida");
+                    }
                 }
+
+                return Result.Fail("Falha ao deletar conta");
             }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
             
-            return Result.Fail("Falha ao deletar conta");
+        }
+
+        public Result contaPaga(int id, ContaPagaDto contaPgDto)
+        {
+            try
+            {
+                ContasPagar conta = _context.ContasPagars.FirstOrDefault(x => x.Id == id);
+
+                if (conta != null)
+                {
+                    _mapper.Map(contaPgDto, conta);
+                    _context.ContasPagars.Update(conta);
+                    _context.SaveChanges();
+                    return Result.Ok().WithSuccess("Conta atualizada");
+                }
+
+                return Result.Fail("Conta não encontrada");
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+            
         }
     }
 }

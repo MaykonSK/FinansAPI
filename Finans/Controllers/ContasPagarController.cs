@@ -67,5 +67,26 @@ namespace Finans.Controllers
 
             return NotFound(resultado.IsFailed);
         }
+
+        [HttpPut("/api/contapaga/{id}")]
+        [Authorize(Roles = "admin, regular")]
+        public IActionResult ContaPaga(int id, ContaPagaDto contaPaga)
+        {
+            Result resultado = _service.contaPaga(id, contaPaga);
+
+            if (resultado.IsSuccess)
+            {
+                return Ok(resultado.Successes.FirstOrDefault());
+            }
+
+            return NotFound(resultado.IsFailed);
+        }
+
+        [HttpGet("/api/totalconta/{userId}")]
+        [Authorize(Roles = "admin, regular")]
+        public IActionResult ContaTotal([FromRoute] int userId)
+        {
+            return Ok(_service.totalContas(userId));
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Finans.Profiles
         public ContasPagarProfile()
         {
             CreateMap<ContasPagarDto, ContasPagar>();
+            CreateMap<ContaPagaDto, ContasPagar>();
         }
     }
 }
