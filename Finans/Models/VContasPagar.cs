@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Finans.Models
 {
-    public partial class ContasPagar
+    public partial class VContasPagar
     {
         public int Id { get; set; }
         public string Descricao { get; set; }
@@ -14,6 +14,6 @@ namespace Finans.Models
         public bool Recorrente { get; set; }
         public int UsuarioId { get; set; }
         public bool? Paga { get; set; }
-
+        public string Status { get; set; }
     }
 }

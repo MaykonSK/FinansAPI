@@ -22,6 +22,7 @@ namespace Finans.Models
         public virtual DbSet<Endereco> Enderecos { get; set; }
         public virtual DbSet<Imovei> Imoveis { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<VContasPagar> VContasPagars { get; set; }
         public virtual DbSet<Veiculo> Veiculos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -137,6 +138,27 @@ namespace Finans.Models
                 entity.Property(e => e.Nome)
                     .IsRequired()
                     .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<VContasPagar>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vContasPagar");
+
+                entity.Property(e => e.Descricao).HasMaxLength(50);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(18)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
+
+                entity.Property(e => e.Valor).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Vencimento).HasColumnType("date");
             });
 
             modelBuilder.Entity<Veiculo>(entity =>
