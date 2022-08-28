@@ -17,7 +17,8 @@ namespace Finans.Migrations
                     Valor = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
                     Vencimento = table.Column<DateTime>(type: "date", nullable: false),
                     Recorrente = table.Column<bool>(type: "bit", nullable: false),
-                    UsuarioID = table.Column<int>(type: "int", nullable: false)
+                    UsuarioID = table.Column<int>(type: "int", nullable: false),
+                    Paga = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

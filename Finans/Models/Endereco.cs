@@ -9,7 +9,7 @@ namespace Finans.Models
     {
         public Endereco()
         {
-            Imoveis = new HashSet<Imovei>();
+            Imoveis = new HashSet<Imovel>();
         }
 
         public int Id { get; set; }
@@ -20,6 +20,6 @@ namespace Finans.Models
         public string Estado { get; set; }
         public string Cep { get; set; }
 
-        public virtual ICollection<Imovei> Imoveis { get; set; }
+        public virtual ICollection<Imovel> Imoveis { get; set; }
     }
 }

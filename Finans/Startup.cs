@@ -69,6 +69,7 @@ namespace Finans
             services.AddControllers();
             services.AddTransient<ContasPagarService>();
             services.AddTransient<UsuarioService>();
+            services.AddTransient<ImoveisService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         }

@@ -20,7 +20,7 @@ namespace Finans.Models
         public virtual DbSet<ContasPagar> ContasPagars { get; set; }
         public virtual DbSet<ContasReceber> ContasRecebers { get; set; }
         public virtual DbSet<Endereco> Enderecos { get; set; }
-        public virtual DbSet<Imovei> Imoveis { get; set; }
+        public virtual DbSet<Imovel> Imoveis { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<VContasPagar> VContasPagars { get; set; }
         public virtual DbSet<Veiculo> Veiculos { get; set; }
@@ -96,7 +96,7 @@ namespace Finans.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Imovei>(entity =>
+            modelBuilder.Entity<Imovel>(entity =>
             {
                 entity.HasIndex(e => e.EnderecoId, "IX_Imoveis_EnderecoID");
 

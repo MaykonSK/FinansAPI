@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Finans.Migrations
 {
     [DbContext(typeof(FinansContext))]
-    [Migration("20220823104405_Initial")]
+    [Migration("20220827143604_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace Finans.Migrations
                     b.Property<string>("Descricao")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool?>("Paga")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Recorrente")
                         .HasColumnType("bit");
@@ -77,7 +80,7 @@ namespace Finans.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex(new[] { "UsuarioId" }, "IX_ContasReceber_UsuarioID");
 
                     b.ToTable("ContasReceber");
                 });
@@ -155,9 +158,9 @@ namespace Finans.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId");
+                    b.HasIndex(new[] { "EnderecoId" }, "IX_Imoveis_EnderecoID");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex(new[] { "UsuarioId" }, "IX_Imoveis_UsuarioID");
 
                     b.ToTable("Imoveis");
                 });
@@ -175,6 +178,41 @@ namespace Finans.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("Finans.Models.VContasPagar", b =>
+                {
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool?>("Paga")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Recorrente")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(18)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(18)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int")
+                        .HasColumnName("UsuarioID");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,0)");
+
+                    b.Property<DateTime>("Vencimento")
+                        .HasColumnType("date");
+
+                    b.ToView("vContasPagar");
                 });
 
             modelBuilder.Entity("Finans.Models.Veiculo", b =>
@@ -208,7 +246,7 @@ namespace Finans.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex(new[] { "UsuarioId" }, "IX_Veiculos_UsuarioID");
 
                     b.ToTable("Veiculos");
                 });
