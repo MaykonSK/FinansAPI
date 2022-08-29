@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Finans.DTO;
 using Finans.Models;
 
 namespace Finans.Profiles
@@ -8,6 +9,7 @@ namespace Finans.Profiles
         public ImoveisProfile()
         {
             CreateMap<Endereco, Imovel>();
+            CreateMap<PostImovelDTO, Imovel>();
         }
     }
 }

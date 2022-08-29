@@ -1,4 +1,5 @@
-﻿using Finans.Models;
+﻿using Finans.DTO;
+using Finans.Models;
 using Finans.Services;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace Finans.Controllers
 
         // POST api/<ImoveisController>
         [HttpPost]
-        public IActionResult Post([FromBody] Imovel value)
+        public IActionResult Post([FromBody] PostImovelDTO value)
         {
             Result resultado = _service.cadastrarImovel(value);
 
@@ -37,6 +38,7 @@ namespace Finans.Controllers
                 return Ok(resultado.Successes.FirstOrDefault());
             }
             return BadRequest(resultado.IsFailed);
+
         }
 
         // PUT api/<ImoveisController>/5

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Finans.DTO;
 using Finans.Models;
 using FluentResults;
 using System;
@@ -17,12 +18,15 @@ namespace Finans.Services
             _context = context;
             _mapper = mapper;
         }
-        public Result cadastrarImovel(Imovel imovel)
+        public Result cadastrarImovel(PostImovelDTO imovelDto)
         {
             try
             {
-                if (imovel != null)
+                if (imovelDto != null)
                 {
+
+                    Imovel imovel = _mapper.Map<Imovel>(imovelDto);
+
                     Result resultadoEndereco = cadastrarEndereco(imovel.Endereco);
 
                     if (resultadoEndereco.IsSuccess)
