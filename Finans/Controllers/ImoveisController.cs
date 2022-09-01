@@ -2,6 +2,7 @@
 using Finans.Models;
 using Finans.Services;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -22,6 +23,7 @@ namespace Finans.Controllers
 
         // GET api/<ImoveisController>/5
         [HttpGet("{userId}")]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult Get(int userId)
         {
             return Ok(_service.recuperarImoveis(userId));
@@ -29,6 +31,7 @@ namespace Finans.Controllers
 
         // POST api/<ImoveisController>
         [HttpPost]
+        [Authorize(Roles = "admin, regular")]
         public IActionResult Post([FromBody] PostImovelDTO value)
         {
             Result resultado = _service.cadastrarImovel(value);

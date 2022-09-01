@@ -14,6 +14,5 @@ namespace Finans.Models
         public bool Recorrente { get; set; }
         public int UsuarioId { get; set; }
         public bool? Paga { get; set; }
-
     }
 }

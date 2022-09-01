@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Finans.Models
 {
-    public partial class VContasPagar
+    public partial class VcontasPagar
     {
         public int Id { get; set; }
         public string Descricao { get; set; }

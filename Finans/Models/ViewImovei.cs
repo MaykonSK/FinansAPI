@@ -5,21 +5,18 @@ using System.Collections.Generic;
 
 namespace Finans.Models
 {
-    public partial class Endereco
+    public partial class ViewImovei
     {
-        public Endereco()
-        {
-            Imoveis = new HashSet<Imovei>();
-        }
-
         public int Id { get; set; }
+        public int UsuarioId { get; set; }
+        public string Descricao { get; set; }
+        public string CodigoIptu { get; set; }
+        public string SitePrefeitura { get; set; }
         public string Rua { get; set; }
         public int? Numero { get; set; }
         public string Bairro { get; set; }
         public string Municipio { get; set; }
         public string Estado { get; set; }
         public string Cep { get; set; }
-
-        public virtual ICollection<Imovei> Imoveis { get; set; }
     }
 }

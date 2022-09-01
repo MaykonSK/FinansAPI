@@ -20,10 +20,11 @@ namespace Finans.Models
         public virtual DbSet<ContasPagar> ContasPagars { get; set; }
         public virtual DbSet<ContasReceber> ContasRecebers { get; set; }
         public virtual DbSet<Endereco> Enderecos { get; set; }
-        public virtual DbSet<Imovel> Imoveis { get; set; }
+        public virtual DbSet<Imovei> Imoveis { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
-        public virtual DbSet<VContasPagar> VContasPagars { get; set; }
+        public virtual DbSet<VcontasPagar> VcontasPagars { get; set; }
         public virtual DbSet<Veiculo> Veiculos { get; set; }
+        public virtual DbSet<ViewImovei> ViewImoveis { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -96,7 +97,7 @@ namespace Finans.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Imovel>(entity =>
+            modelBuilder.Entity<Imovei>(entity =>
             {
                 entity.HasIndex(e => e.EnderecoId, "IX_Imoveis_EnderecoID");
 
@@ -140,18 +141,18 @@ namespace Finans.Models
                     .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<VContasPagar>(entity =>
+            modelBuilder.Entity<VcontasPagar>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("vContasPagar");
+                entity.ToView("VContasPagar");
 
                 entity.Property(e => e.Descricao).HasMaxLength(50);
 
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(18)
+                    .HasMaxLength(15)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
@@ -184,6 +185,47 @@ namespace Finans.Models
                     .HasForeignKey(d => d.UsuarioId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Veiculos_Usuario");
+            });
+
+            modelBuilder.Entity<ViewImovei>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_Imoveis");
+
+                entity.Property(e => e.Bairro)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Cep)
+                    .IsRequired()
+                    .HasMaxLength(8)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.CodigoIptu)
+                    .HasMaxLength(50)
+                    .HasColumnName("CodigoIPTU");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasMaxLength(2)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Municipio)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Rua)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.SitePrefeitura).HasMaxLength(100);
+
+                entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
             });
 
             OnModelCreatingPartial(modelBuilder);

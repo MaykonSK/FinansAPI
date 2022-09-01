@@ -24,16 +24,13 @@ namespace Finans.Services
             {
                 if (imovelDto != null)
                 {
+                    Imovei imovel = _mapper.Map<Imovei>(imovelDto);
 
-                    Imovel imovel = _mapper.Map<Imovel>(imovelDto);
+                    int EnderecoID = cadastrarEndereco(imovel.Endereco);
 
-                    Result resultadoEndereco = cadastrarEndereco(imovel.Endereco);
-
-                    if (resultadoEndereco.IsSuccess)
+                    if (EnderecoID != 0)
                     {
-                        var enderecoId = resultadoEndereco.Successes.ToString();
-
-                        imovel.Id = Int32.Parse(enderecoId);
+                        imovel.EnderecoId = EnderecoID;
 
                         _context.Imoveis.Add(imovel);
                         var resultado = _context.SaveChanges().ToResult();
@@ -45,6 +42,7 @@ namespace Finans.Services
 
                         return Result.Fail("Erro ao salvar imovel");
                     }
+                    return Result.Fail("Endereço não cadastrado");
                     
                 }
                 return Result.Fail("Imovel inválido para registro");
@@ -55,24 +53,38 @@ namespace Finans.Services
             }
         }
 
-        public IEnumerable<Imovel> recuperarImoveis(int userId)
+        public IEnumerable<ViewImovei> recuperarImoveis(int userId)
         {
-            IEnumerable<Imovel> lista = _context.Imoveis.Where(x => x.UsuarioId == userId);
+            IEnumerable<ViewImovei> lista = _context.ViewImoveis.Where(x => x.UsuarioId == userId);
             return lista;
         }
 
-        public Result cadastrarEndereco(Endereco endereco)
+        public int cadastrarEndereco(Endereco endereco)
         {
+            int id = 0;
+
             if (endereco != null)
             {
-                _context.Enderecos.Add(endereco);
-                _context.SaveChanges();
+                foreach (var chr in new string[] { "(", ")", "-", " " })
+                {
+                    endereco.Cep = endereco.Cep.Replace(chr, "");
+                }
 
-                var Id = endereco.Id;
+                var verificaEndereco = _context.Enderecos.FirstOrDefault(x => x.Rua == endereco.Rua && x.Bairro == endereco.Bairro && x.Numero == endereco.Numero);
 
-                return Result.Ok().WithSuccess(Id.ToString());
+                if (verificaEndereco == null)
+                {
+                    _context.Enderecos.Add(endereco);
+                    _context.SaveChanges();
+                    id = endereco.Id;
+                } else
+                {
+                    id = verificaEndereco.Id;
+                }
+
+                return id;
             }
-            return Result.Fail("Inconsistencia no endereço para cadastro");
+            return id;
         }
 
         //public double somaImoveis(int userId)

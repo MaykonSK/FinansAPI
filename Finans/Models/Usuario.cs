@@ -10,7 +10,7 @@ namespace Finans.Models
         public Usuario()
         {
             ContasRecebers = new HashSet<ContasReceber>();
-            Imoveis = new HashSet<Imovel>();
+            Imoveis = new HashSet<Imovei>();
             Veiculos = new HashSet<Veiculo>();
         }
 
@@ -18,7 +18,7 @@ namespace Finans.Models
         public string Nome { get; set; }
 
         public virtual ICollection<ContasReceber> ContasRecebers { get; set; }
-        public virtual ICollection<Imovel> Imoveis { get; set; }
+        public virtual ICollection<Imovei> Imoveis { get; set; }
         public virtual ICollection<Veiculo> Veiculos { get; set; }
     }
 }

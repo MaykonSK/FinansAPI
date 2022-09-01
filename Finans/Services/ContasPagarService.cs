@@ -45,9 +45,9 @@ namespace Finans.Services
             }
         }
 
-        public IEnumerable<VContasPagar> recuperarContas(int userId)
+        public IEnumerable<VcontasPagar> recuperarContas(int userId)
         {
-            IEnumerable<VContasPagar> lista = _context.VContasPagars.Where(x => x.UsuarioId == userId).OrderBy(y => y.Vencimento);
+            IEnumerable<VcontasPagar> lista = _context.VcontasPagars.Where(x => x.UsuarioId == userId).OrderBy(y => y.Vencimento);
             return lista;
         }
 
