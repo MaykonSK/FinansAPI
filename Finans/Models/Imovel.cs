@@ -13,6 +13,7 @@ namespace Finans.Models
         public int EnderecoId { get; set; }
         public string CodigoIptu { get; set; }
         public string SitePrefeitura { get; set; }
+        public string Imagem { get; set; }
 
         public virtual Endereco Endereco { get; set; }
         public virtual Usuario Usuario { get; set; }

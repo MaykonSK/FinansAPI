@@ -1,4 +1,5 @@
-﻿using Finans.Services;
+﻿using Finans.Models;
+using Finans.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,30 +23,20 @@ namespace Finans.Controllers
             _service = service;
         }
 
-        [HttpPost("/api/upload")]
+        [HttpPost("/api/upload/{userId}")]
         [Authorize(Roles = "admin, regular")]
-        public async Task<string> UploadFileAsync([FromForm] IFormFile file)
+        public async Task<string> UploadFileAsync([FromForm] IFormFile file, int userId)
         {
-            return await _service.UploadFile(file);
+            return await _service.UploadFile(file, userId);
         }
 
-        [HttpGet("/api/ImgProfile")]
+        [HttpGet("/api/user/{id}")]
         [Authorize(Roles = "admin, regular")]
-        public IActionResult GetFile()
+        public IActionResult getUsuario(int id)
         {
-            //Byte[] b = System.IO.File.ReadAllBytes("Imagens/ImgUsers/imagem.jpg");   // You can use your own method over here.         
-            //return File(b, "image/jpeg");
-
             try
             {
-                var path = ("Imagens/ImgUsers/imagem.jpg");
-
-                if (System.IO.File.Exists(path))
-                {
-                    const string contentType = "application/octet-stream";
-                    return File(System.IO.File.OpenRead(path), contentType, Path.GetFileName(path));
-                }
-                return NotFound();
+                return Ok(_service.recuperarDadosUsuario(id));
             }
             catch (Exception e)
             {

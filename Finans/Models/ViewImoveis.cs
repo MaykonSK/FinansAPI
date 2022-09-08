@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Finans.Models
 {
-    public partial class ViewImovei
+    public partial class ViewImoveis
     {
         public int Id { get; set; }
         public int UsuarioId { get; set; }

@@ -22,7 +22,7 @@ namespace Finans.Services
             _environment = environment;
         }
 
-        public async Task<string> UploadFile(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file, int userId)
         {
             if (file.Length > 0)
             {
@@ -45,15 +45,19 @@ namespace Finans.Services
             }
         }
 
-        //public string GetFile()
-        //{
-        //    HttpResponseMessage response = new HttpResponseMessage();
-        //    Byte[] b = (GetImageByteArray());
-        //    response.Content = new ByteArrayContent(b);
-        //    response.Content.LoadIntoBufferAsync(b.Length).Wait();
-        //    response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-        //    return response;
-        //}
+        public Usuario recuperarDadosUsuario(int id)
+        {
+            Usuario usuario = _context.Usuarios.FirstOrDefault(x => x.Id == id);
+            usuario.Imagem = this.GetFile(usuario.Imagem);
+            return usuario;
+        }
+
+        public string GetFile(string imageName)
+        {
+            string path = Path.Combine(_environment.ContentRootPath, "Imagens/ImgUsers/" + imageName);
+            byte[] b = System.IO.File.ReadAllBytes(path);
+            return Convert.ToBase64String(b);
+        }
 
     }
 }

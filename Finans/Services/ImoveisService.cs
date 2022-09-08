@@ -2,9 +2,13 @@
 using Finans.DTO;
 using Finans.Models;
 using FluentResults;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Finans.Services
 {
@@ -12,11 +16,13 @@ namespace Finans.Services
     {
         private FinansContext _context;
         private readonly IMapper _mapper;
+        private static IWebHostEnvironment _environment;
 
-        public ImoveisService(FinansContext context, IMapper mapper)
+        public ImoveisService(FinansContext context, IMapper mapper, IWebHostEnvironment environment)
         {
             _context = context;
             _mapper = mapper;
+            _environment = environment;
         }
         public Result cadastrarImovel(PostImovelDTO imovelDto)
         {
@@ -24,7 +30,7 @@ namespace Finans.Services
             {
                 if (imovelDto != null)
                 {
-                    Imovei imovel = _mapper.Map<Imovei>(imovelDto);
+                    Imovel imovel = _mapper.Map<Imovel>(imovelDto);
 
                     int EnderecoID = cadastrarEndereco(imovel.Endereco);
 
@@ -53,9 +59,9 @@ namespace Finans.Services
             }
         }
 
-        public IEnumerable<ViewImovei> recuperarImoveis(int userId)
+        public IEnumerable<ViewImoveis> recuperarImoveis(int userId)
         {
-            IEnumerable<ViewImovei> lista = _context.ViewImoveis.Where(x => x.UsuarioId == userId);
+            IEnumerable<ViewImoveis> lista = _context.ViewImoveis.Where(x => x.UsuarioId == userId);
             return lista;
         }
 
@@ -85,6 +91,37 @@ namespace Finans.Services
                 return id;
             }
             return id;
+        }
+
+        public async Task<string> UploadFile(IFormFile file)
+        {
+            if (file.Length > 0)
+            {
+                try
+                {
+                    string diretorio = Path.Combine(_environment.ContentRootPath, "Imagens/ImgUsers");
+                    string filePath = Path.Combine(diretorio, file.FileName);
+                    await using var stream = new FileStream(filePath, FileMode.Create);
+                    file.CopyTo(stream);
+                    return "\\ImgUsers\\" + file.FileName;
+                }
+                catch (Exception)
+                {
+
+                    return "Não foi possivel salvar a imagem";
+                }
+            }
+            else
+            {
+                return "Ocorreu uma falha no envio do arquivo...";
+            }
+        }
+
+        public string GetFile(string imageName)
+        {
+            string path = Path.Combine(_environment.ContentRootPath, "Imagens/ImgUsers/" + imageName);
+            byte[] b = System.IO.File.ReadAllBytes(path);
+            return Convert.ToBase64String(b);
         }
 
         //public double somaImoveis(int userId)

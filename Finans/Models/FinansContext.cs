@@ -20,11 +20,11 @@ namespace Finans.Models
         public virtual DbSet<ContasPagar> ContasPagars { get; set; }
         public virtual DbSet<ContasReceber> ContasRecebers { get; set; }
         public virtual DbSet<Endereco> Enderecos { get; set; }
-        public virtual DbSet<Imovei> Imoveis { get; set; }
+        public virtual DbSet<Imovel> Imoveis { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<VcontasPagar> VcontasPagars { get; set; }
         public virtual DbSet<Veiculo> Veiculos { get; set; }
-        public virtual DbSet<ViewImovei> ViewImoveis { get; set; }
+        public virtual DbSet<ViewImoveis> ViewImoveis { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -97,7 +97,7 @@ namespace Finans.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Imovei>(entity =>
+            modelBuilder.Entity<Imovel>(entity =>
             {
                 entity.HasIndex(e => e.EnderecoId, "IX_Imoveis_EnderecoID");
 
@@ -114,6 +114,8 @@ namespace Finans.Models
                 entity.Property(e => e.EnderecoId).HasColumnName("EnderecoID");
 
                 entity.Property(e => e.SitePrefeitura).HasMaxLength(100);
+
+                entity.Property(e => e.Imagem).HasMaxLength(50);
 
                 entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
 
@@ -139,6 +141,8 @@ namespace Finans.Models
                 entity.Property(e => e.Nome)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.Imagem).HasMaxLength(500);
             });
 
             modelBuilder.Entity<VcontasPagar>(entity =>
@@ -187,11 +191,11 @@ namespace Finans.Models
                     .HasConstraintName("FK_Veiculos_Usuario");
             });
 
-            modelBuilder.Entity<ViewImovei>(entity =>
+            modelBuilder.Entity<ViewImoveis>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("View_Imoveis");
+                entity.ToView("ViewImoveis");
 
                 entity.Property(e => e.Bairro)
                     .IsRequired()

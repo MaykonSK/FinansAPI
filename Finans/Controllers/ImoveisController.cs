@@ -29,6 +29,13 @@ namespace Finans.Controllers
             return Ok(_service.recuperarImoveis(userId));
         }
 
+        [HttpGet("/api/GetImagemImovel/")]
+        [Authorize(Roles = "admin, regular")]
+        public IActionResult GetImagem()
+        {
+            return Ok();
+        }
+
         // POST api/<ImoveisController>
         [HttpPost]
         [Authorize(Roles = "admin, regular")]
