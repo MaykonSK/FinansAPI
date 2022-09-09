@@ -10,6 +10,7 @@ namespace Finans.Profiles
         {
             CreateMap<Endereco, Imovel>();
             CreateMap<PostImovelDTO, Imovel>();
+            CreateMap<Imovel, Imovel>();
         }
     }
 }

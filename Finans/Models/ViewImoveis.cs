@@ -12,6 +12,7 @@ namespace Finans.Models
         public string Descricao { get; set; }
         public string CodigoIptu { get; set; }
         public string SitePrefeitura { get; set; }
+        public string Imagem { get; set; }
         public string Rua { get; set; }
         public int? Numero { get; set; }
         public string Bairro { get; set; }

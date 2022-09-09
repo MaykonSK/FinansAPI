@@ -61,8 +61,23 @@ namespace Finans.Services
 
         public IEnumerable<ViewImoveis> recuperarImoveis(int userId)
         {
-            IEnumerable<ViewImoveis> lista = _context.ViewImoveis.Where(x => x.UsuarioId == userId);
-            return lista;
+            try
+            {
+                List<ViewImoveis> lista = _context.ViewImoveis.Where(x => x.UsuarioId == userId).ToList();
+
+                foreach (var item in lista)
+                {
+                    item.Imagem = this.recuperarImagem(item.Imagem);
+                }
+
+                return lista;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public int cadastrarEndereco(Endereco endereco)
@@ -117,11 +132,64 @@ namespace Finans.Services
             }
         }
 
-        public string GetFile(string imageName)
+        public string recuperarImagem(string img)
         {
-            string path = Path.Combine(_environment.ContentRootPath, "Imagens/ImgUsers/" + imageName);
-            byte[] b = System.IO.File.ReadAllBytes(path);
-            return Convert.ToBase64String(b);
+            
+            if (img != null)
+            {
+                string path = Path.Combine(_environment.ContentRootPath, "Imagens/ImgUsers/" + img);
+                byte[] b = System.IO.File.ReadAllBytes(path);
+                return "data:image/jpeg;base64," +  Convert.ToBase64String(b);
+            }
+
+            return null;  
+        }
+
+        public Result deletarConta(int id)
+        {
+            try
+            {
+                Imovel imovel = _context.Imoveis.FirstOrDefault(x => x.Id == id);
+
+                if (imovel != null)
+                {
+                    _context.Imoveis.Remove(imovel).ToResult();
+                    var resultado = _context.SaveChanges().ToResult();
+
+                    if (resultado.IsSuccess)
+                    {
+                        return Result.Ok().WithSuccess("Imovel excluido");
+                    }
+                }
+
+                return Result.Fail("Falha ao deletar imovel");
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Result atualizarImovel(int id, Imovel requestUpdate)
+        {
+            try
+            {
+                Imovel imovel = _context.Imoveis.FirstOrDefault(x => x.Id == id);
+
+                if (imovel != null)
+                {
+                    _mapper.Map(requestUpdate, imovel);
+                    _context.Imoveis.Update(imovel);
+                    _context.SaveChanges();
+                    return Result.Ok().WithSuccess("Imovel atualizado");
+                }
+                return Result.Fail("Imovel não encontrado");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         //public double somaImoveis(int userId)

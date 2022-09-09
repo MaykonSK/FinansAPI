@@ -82,8 +82,6 @@ namespace Finans.Services
 
                 throw;
             }
-
-            
         }
 
         public Result deletarConta(int id)

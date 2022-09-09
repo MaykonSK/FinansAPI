@@ -229,6 +229,8 @@ namespace Finans.Models
 
                 entity.Property(e => e.SitePrefeitura).HasMaxLength(100);
 
+                entity.Property(e => e.Imagem).HasMaxLength(50);
+
                 entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
             });
 
