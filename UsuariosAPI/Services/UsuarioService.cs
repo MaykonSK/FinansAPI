@@ -106,8 +106,9 @@ namespace UsuariosAPI.Services
             #endregion
         }
 
-        public Result logarUsuario(Login login)
+        public Result logarUsuario(LoginDto loginDto)
         {
+            Login login = _mapper.Map<Login>(loginDto);
             #region login
             //recupera o UserName pelo email
             var user = _signInManager.UserManager.FindByEmailAsync(login.Email).Result.UserName;

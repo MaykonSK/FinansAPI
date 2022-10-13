@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using UsuariosAPI.Models;
 using UsuariosAPI.Services;
+using UsuariosAPI.Shared;
 
 namespace UsuariosAPI
 {
@@ -56,6 +57,7 @@ namespace UsuariosAPI
             services.AddTransient<UsuarioService>(); //ativa a classe como service
             services.AddTransient<TokenService>(); //ativa a classe como service
             services.AddTransient<EmailService>(); //ativa a classe como service
+            services.AddTransient<RecaptchaValidate>(); //ativa a classe como service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

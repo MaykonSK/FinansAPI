@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using UsuariosAPI.Models;
+using UsuariosAPI.Models.DTO;
 using UsuariosAPI.Services;
+using UsuariosAPI.Shared;
 
 namespace UsuariosAPI.Controllers
 {
@@ -11,23 +13,32 @@ namespace UsuariosAPI.Controllers
     public class LoginController : ControllerBase
     {
         UsuarioService _service;
-        public LoginController(UsuarioService service)
+        RecaptchaValidate _recaptcha;
+
+        public LoginController(UsuarioService service, RecaptchaValidate recaptcha)
         {
             _service = service;
+            _recaptcha = recaptcha;
         }
 
         [HttpPost]
-        public IActionResult LogarUsuario(Login login)
+        public IActionResult LogarUsuario(LoginDto loginDto)
         {
-            //Utilizando o pacote FluentResult
-            Result resultado = _service.logarUsuario(login);
-            if (resultado.IsFailed)
+            var resposta = _recaptcha.Validate(loginDto.recaptcha);
+            if (resposta == true)
             {
-                //não autorizado
-                return Unauthorized(resultado.Errors.FirstOrDefault());
-            }
+                //Utilizando o pacote FluentResult
+                Result resultado = _service.logarUsuario(loginDto);
+                if (resultado.IsFailed)
+                {
+                    //não autorizado
+                    return Unauthorized(resultado.Errors.FirstOrDefault());
+                }
 
-            return Ok(resultado.Successes.FirstOrDefault()); //retorna token para o client
+                return Ok(resultado.Successes.FirstOrDefault()); //retorna token para o client
+            }
+            return Unauthorized();
+
         }
 
         [HttpPost("/solicita-reset-senha")]
